@@ -31,7 +31,7 @@ const input = document.querySelector('input');
 const dropdown = document.querySelector('.dropdown');
 const resultsWrapper = document.querySelector('.results');
 
-//* Use data from fetchData
+//* Use data from fetchData to create dropdown menu
 const onInput = async (event) => {
   const movies = await fetchData(event.target.value);
 
@@ -53,5 +53,12 @@ const onInput = async (event) => {
   }
 };
 
-//* Event Listener
+//* Event Listeners
 input.addEventListener('input', debounce(onInput, 500));
+
+//* Closes dropdown menu
+document.addEventListener('click', (event) => {
+  if (!root.contains(event.target)) {
+    dropdown.classList.remove('is-active');
+  }
+});
