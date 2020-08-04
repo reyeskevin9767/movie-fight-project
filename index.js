@@ -1,8 +1,5 @@
-//* Customize createAutoComplete
-createAutoComplete({
-  //* Assign div with class to root
-  root: document.querySelector('.autocomplete'),
-
+//* Reusable functions
+const autoCompleteConfig = {
   //* Render the movie's basic info
   renderOption(movie) {
     const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
@@ -32,6 +29,22 @@ createAutoComplete({
 
     return response.data.Search;
   },
+};
+
+//* Customize createAutoComplete
+createAutoComplete({
+  ...autoCompleteConfig,
+
+  //* Assign div with class to root
+  root: document.querySelector('#left-autocomplete'),
+});
+
+//* Customize createAutoComplete
+createAutoComplete({
+  ...autoCompleteConfig,
+
+  //* Assign div with class to root
+  root: document.querySelector('#right-autocomplete'),
 });
 
 //* Fetch from the api, more details about the movie
