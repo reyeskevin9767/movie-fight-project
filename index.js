@@ -37,7 +37,7 @@ createAutoComplete({
     document.querySelector('.tutorial').classList.add('is-hidden');
 
     //* Send another request to api
-    onMovieSelect(movie,  document.querySelector('#left-summary'));
+    onMovieSelect(movie, document.querySelector('#left-summary'), 'left');
   },
 });
 
@@ -52,12 +52,15 @@ createAutoComplete({
     document.querySelector('.tutorial').classList.add('is-hidden');
 
     //* Send another request to api
-    onMovieSelect(movie, document.querySelector('#right-summary'));
+    onMovieSelect(movie, document.querySelector('#right-summary'), 'right');
   },
 });
 
+
+let leftMovie;
+let rightMovie;
 //* Fetch from the api, more details about the movie
-const onMovieSelect = async (movie, summaryElement) => {
+const onMovieSelect = async (movie, summaryElement, side) => {
   const response = await axios.get('http://www.omdbapi.com/', {
     params: {
       apikey: 'e2e8e539',
@@ -66,6 +69,21 @@ const onMovieSelect = async (movie, summaryElement) => {
   });
 
   summaryElement.innerHTML = movieTemplate(response.data);
+
+  if (side === 'left') {
+    leftMovie = response.data;
+  } else {
+    rightMovie = response.data;
+  }
+
+  if (leftMovie && rightMovie) {
+    runComparison();
+  }
+};
+
+//* Compare movies
+const runComparison = () => {
+  console.log('time For Comparison');
 };
 
 //* Generate HTML for a movie's title, genre, and plot
