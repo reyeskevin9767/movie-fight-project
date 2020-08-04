@@ -14,8 +14,22 @@ const fetchData = async (searchTerm) => {
   return response.data.Search;
 };
 
+//* Generating HTML for dropdown menu
+const root = document.querySelector('.autocomplete');
+root.innerHTML = `
+<label><b>Search For a Movie</b></label>
+<input class = "input" />
+<div class="dropdown">
+  <div class="dropdown-menu">
+    <div class="dropdown-content results"></div>
+  </div>
+</div>
+`;
+
 //* Query Selectors
 const input = document.querySelector('input');
+const dropdown = document.querySelector('.dropdown');
+const resultsWrapper = document.querySelector('.results');
 
 //* Use data from fetchData
 const onInput = async (event) => {
