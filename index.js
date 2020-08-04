@@ -14,17 +14,19 @@ const fetchData = async (searchTerm) => {
   return response.data.Search;
 };
 
-//* Call createAutoComplete
+//* Customize createAutoComplete
 createAutoComplete({
+  //* Assign div to root
   root: document.querySelector('.autocomplete'),
-});
 
-createAutoComplete({
-  root: document.querySelector('.autocomplete-two'),
-});
-
-createAutoComplete({
-  root: document.querySelector('.autocomplete-three'),
+  //* Render the movie basic details
+  renderOption(movie) {
+    const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
+    return `
+    <img src="${imgSrc}" />
+    ${movie.Title} (${movie.Year})
+    `;
+  },
 });
 
 //* Fetch from the api, more details about the movie

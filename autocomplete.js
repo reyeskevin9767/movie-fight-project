@@ -1,6 +1,5 @@
-//* Take the autocomplete config and render it
-const createAutoComplete = ({ root }) => {
-
+//* Created createAutoComplete to make code more useable
+const createAutoComplete = ({ root, renderOption }) => {
   //* Generate HTML for dropdown menu
   root.innerHTML = `
     <label><b>Search For a Movie</b></label>
@@ -32,14 +31,10 @@ const createAutoComplete = ({ root }) => {
 
     for (let movie of movies) {
       const option = document.createElement('a');
-      const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
 
       option.classList.add('dropdown-item');
 
-      option.innerHTML = `
-    <img src="${imgSrc}" />
-    ${movie.Title}
-    `;
+      option.innerHTML = renderOption(movie);
 
       option.addEventListener('click', () => {
         dropdown.classList.remove('is-active');
