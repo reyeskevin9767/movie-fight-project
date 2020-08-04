@@ -7,15 +7,26 @@ const fetchData = async (searchTerm) => {
     },
   });
 
-  console.log(response.data);
+  return response.data.Search;
 };
 
 //* Query Selectors
 const input = document.querySelector('input');
 
-//* Call fetchData
-const onInput = (event) => {
-  fetchData(event.target.value);
+//* Use data from fetchData
+const onInput = async (event) => {
+  const movies = await fetchData(event.target.value);
+
+  for (let movie of movies) {
+    const div = document.createElement('div');
+
+    div.innerHTML = `
+    <img src="${movie.Poster}" />
+    <h1>${movie.Title}</h1>
+    `;
+
+    document.querySelector('#target').appendChild(div);
+  }
 };
 
 //* Event Listener
