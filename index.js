@@ -7,15 +7,16 @@ const fetchData = async (searchTerm) => {
     },
   });
 
-  console.log(response.data);
+  return response.data.Search;
 };
 
 //* Query Selectors
 const input = document.querySelector('input');
 
 //* Call fetchData
-const onInput = (event) => {
-  fetchData(event.target.value);
+const onInput = async (event) => {
+  const movies = await fetchData(event.target.value);
+  console.log(movies);
 };
 
 //* Event Listener
