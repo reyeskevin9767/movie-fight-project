@@ -7,27 +7,58 @@ const fetchData = async (searchTerm) => {
     },
   });
 
+  if (response.data.Error) {
+    return [];
+  }
+
   return response.data.Search;
 };
 
+//* Generating HTML for dropdown menu
+const root = document.querySelector('.autocomplete');
+root.innerHTML = `
+<label><b>Search For a Movie</b></label>
+<input class = "input" />
+<div class="dropdown">
+  <div class="dropdown-menu">
+    <div class="dropdown-content results"></div>
+  </div>
+</div>
+`;
+
 //* Query Selectors
 const input = document.querySelector('input');
+const dropdown = document.querySelector('.dropdown');
+const resultsWrapper = document.querySelector('.results');
 
-//* Use data from fetchData
+//* Use data from fetchData to create dropdown menu
 const onInput = async (event) => {
   const movies = await fetchData(event.target.value);
 
-  for (let movie of movies) {
-    const div = document.createElement('div');
+  resultsWrapper.innerHTML = '';
+  dropdown.classList.add('is-active');
 
-    div.innerHTML = `
-    <img src="${movie.Poster}" />
-    <h1>${movie.Title}</h1>
+  for (let movie of movies) {
+    const option = document.createElement('a');
+    const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
+
+    option.classList.add('dropdown-item');
+
+    option.innerHTML = `
+    <img src="${imgSrc}" />
+    ${movie.Title}
     `;
 
-    document.querySelector('#target').appendChild(div);
+    resultsWrapper.appendChild(option);
   }
 };
 
-//* Event Listener
+//* Event Listeners
 input.addEventListener('input', debounce(onInput, 500));
+
+//* Closes dropdown menu
+document.addEventListener('click', (event) => {
+  if (!root.contains(event.target)) {
+    dropdown.classList.remove('is-active');
+  }
+});
