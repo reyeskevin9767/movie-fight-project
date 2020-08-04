@@ -13,18 +13,23 @@ const fetchData = async (searchTerm) => {
 //* Query Selectors
 const input = document.querySelector('input');
 
-let timeoutId;
+//* Limit how often function is invoke
+const debounce = (func, delay = 1000) => {
+  let timeoutId;
 
-//* Delay between input and fetchData
+  return (...args) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      func.apply(null, args);
+    }, delay);
+  };
+};
+
 const onInput = (event) => {
-  if (timeoutId) {
-    clearTimeout(timeoutId);
-  }
-
-  timeoutId = setTimeout(() => {
-    fetchData(event.target.value);
-  }, 500);
+  fetchData(event.target.value);
 };
 
 //* Event Listener
-input.addEventListener('input', onInput);
+input.addEventListener('input', debounce(onInput, 500));
