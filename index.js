@@ -16,16 +16,21 @@ const fetchData = async (searchTerm) => {
 
 //* Customize createAutoComplete
 createAutoComplete({
-  //* Assign div to root
+  //* Assign div with class to root
   root: document.querySelector('.autocomplete'),
 
-  //* Render the movie basic details
+  //* Render the movie's basic info
   renderOption(movie) {
     const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
-    return `
-    <img src="${imgSrc}" />
-    ${movie.Title} (${movie.Year})
-    `;
+    return `<img src="${imgSrc}" /> ${movie.Title} (${movie.Year})`;
+  },
+
+  onOptionSelect(movie) {
+    //* Send another request to api
+    onMovieSelect(movie);
+  },
+  inputValue(movie) {
+    return movie.Title;
   },
 });
 

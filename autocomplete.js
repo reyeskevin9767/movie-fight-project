@@ -1,5 +1,10 @@
 //* Created createAutoComplete to make code more useable
-const createAutoComplete = ({ root, renderOption }) => {
+const createAutoComplete = ({
+  root,
+  renderOption,
+  onOptionSelect,
+  inputValue,
+}) => {
   //* Generate HTML for dropdown menu
   root.innerHTML = `
     <label><b>Search For a Movie</b></label>
@@ -38,10 +43,8 @@ const createAutoComplete = ({ root, renderOption }) => {
 
       option.addEventListener('click', () => {
         dropdown.classList.remove('is-active');
-        input.value = movie.Title;
-
-        //* Send another request to api
-        onMovieSelect(movie);
+        input.value = inputValue(movie);
+        onOptionSelect(movie);
       });
 
       resultsWrapper.appendChild(option);
