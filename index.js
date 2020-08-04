@@ -10,10 +10,21 @@ const fetchData = async (searchTerm) => {
   console.log(response.data);
 };
 
-//* Event Listeners
+//* Query Selectors
 const input = document.querySelector('input');
 
-//* Every input will call fetchData
-input.addEventListener('input', (event) => {
-  fetchData(event.target.value);
-});
+let timeoutId;
+
+//* Delay between input and fetchData
+const onInput = (event) => {
+  if (timeoutId) {
+    clearTimeout(timeoutId);
+  }
+
+  timeoutId = setTimeout(() => {
+    fetchData(event.target.value);
+  }, 500);
+};
+
+//* Event Listener
+input.addEventListener('input', onInput);
