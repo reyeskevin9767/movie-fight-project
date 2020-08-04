@@ -56,7 +56,6 @@ createAutoComplete({
   },
 });
 
-
 let leftMovie;
 let rightMovie;
 //* Fetch from the api, more details about the movie
@@ -86,10 +85,26 @@ const runComparison = () => {
   console.log('time For Comparison');
 };
 
-//* Generate HTML for a movie's title, genre, and plot
+//* Generate HTML for movie's details
 const movieTemplate = (movieDetail) => {
-  return `
+  const dollars = parseInt(
+    movieDetail.BoxOffice.replace(/\$/g, '').replace(/,/g, '')
+  );
+  const metascore = parseInt(movieDetail.Metascore);
+  const imdbRating = parseFloat(movieDetail.imdbRating);
+  const imdbVotes = parseInt(movieDetail.imdbVotes.replace(/,/g, ''));
 
+  const awards = movieDetail.Awards.split(' ').reduce((prev, word) => {
+    const value = parseInt(word);
+
+    if (isNaN(value)) {
+      return prev;
+    } else {
+      return prev + value;
+    }
+  }, 0);
+
+  return `
     <article class="media">
       <figure class="media-left">
         <p class="image">
