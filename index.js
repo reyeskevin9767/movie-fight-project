@@ -1,19 +1,3 @@
-//* Fetch from the api, basic info of movie
-const fetchData = async (searchTerm) => {
-  const response = await axios.get('http://www.omdbapi.com/', {
-    params: {
-      apikey: 'e2e8e539',
-      s: searchTerm,
-    },
-  });
-
-  if (response.data.Error) {
-    return [];
-  }
-
-  return response.data.Search;
-};
-
 //* Customize createAutoComplete
 createAutoComplete({
   //* Assign div with class to root
@@ -31,6 +15,22 @@ createAutoComplete({
   },
   inputValue(movie) {
     return movie.Title;
+  },
+
+  //* Fetch from the api, basic info of movie
+  async fetchData(searchTerm) {
+    const response = await axios.get('http://www.omdbapi.com/', {
+      params: {
+        apikey: 'e2e8e539',
+        s: searchTerm,
+      },
+    });
+
+    if (response.data.Error) {
+      return [];
+    }
+
+    return response.data.Search;
   },
 });
 
