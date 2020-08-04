@@ -1,14 +1,9 @@
-//* Reusable functions
+//* Functions that don't change
 const autoCompleteConfig = {
   //* Render the movie's basic info
   renderOption(movie) {
     const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
     return `<img src="${imgSrc}" /> ${movie.Title} (${movie.Year})`;
-  },
-
-  onOptionSelect(movie) {
-    //* Send another request to api
-    onMovieSelect(movie);
   },
   inputValue(movie) {
     return movie.Title;
@@ -31,24 +26,38 @@ const autoCompleteConfig = {
   },
 };
 
-//* Customize createAutoComplete
+//* Customize left createAutoComplete
 createAutoComplete({
   ...autoCompleteConfig,
 
   //* Assign div with class to root
   root: document.querySelector('#left-autocomplete'),
+
+  onOptionSelect(movie) {
+    document.querySelector('.tutorial').classList.add('is-hidden');
+
+    //* Send another request to api
+    onMovieSelect(movie,  document.querySelector('#left-summary'));
+  },
 });
 
-//* Customize createAutoComplete
+//* Customize right createAutoComplete
 createAutoComplete({
   ...autoCompleteConfig,
 
   //* Assign div with class to root
   root: document.querySelector('#right-autocomplete'),
+
+  onOptionSelect(movie) {
+    document.querySelector('.tutorial').classList.add('is-hidden');
+
+    //* Send another request to api
+    onMovieSelect(movie, document.querySelector('#right-summary'));
+  },
 });
 
 //* Fetch from the api, more details about the movie
-const onMovieSelect = async (movie) => {
+const onMovieSelect = async (movie, summaryElement) => {
   const response = await axios.get('http://www.omdbapi.com/', {
     params: {
       apikey: 'e2e8e539',
@@ -56,7 +65,7 @@ const onMovieSelect = async (movie) => {
     },
   });
 
-  document.querySelector('#summary').innerHTML = movieTemplate(response.data);
+  summaryElement.innerHTML = movieTemplate(response.data);
 };
 
 //* Generate HTML for a movie's title, genre, and plot
