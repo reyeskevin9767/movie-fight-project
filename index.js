@@ -14,66 +14,17 @@ const fetchData = async (searchTerm) => {
   return response.data.Search;
 };
 
-//* Generate HTML for dropdown menu
-const root = document.querySelector('.autocomplete');
-root.innerHTML = `
-<label><b>Search For a Movie</b></label>
-<input class = "input" />
-<div class="dropdown">
-  <div class="dropdown-menu">
-    <div class="dropdown-content results"></div>
-  </div>
-</div>
-`;
+//* Call createAutoComplete
+createAutoComplete({
+  root: document.querySelector('.autocomplete'),
+});
 
-//* Query Selectors
-const input = document.querySelector('input');
-const dropdown = document.querySelector('.dropdown');
-const resultsWrapper = document.querySelector('.results');
+createAutoComplete({
+  root: document.querySelector('.autocomplete-two'),
+});
 
-//* Use data from fetchData to create dropdown menu
-const onInput = async (event) => {
-  const movies = await fetchData(event.target.value);
-
-  if (!movies.length) {
-    dropdown.classList.remove('is-active');
-    return;
-  }
-
-  resultsWrapper.innerHTML = '';
-  dropdown.classList.add('is-active');
-
-  for (let movie of movies) {
-    const option = document.createElement('a');
-    const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
-
-    option.classList.add('dropdown-item');
-
-    option.innerHTML = `
-    <img src="${imgSrc}" />
-    ${movie.Title}
-    `;
-
-    option.addEventListener('click', () => {
-      dropdown.classList.remove('is-active');
-      input.value = movie.Title;
-
-      //* Send another request to api
-      onMovieSelect(movie);
-    });
-
-    resultsWrapper.appendChild(option);
-  }
-};
-
-//* Event Listeners
-input.addEventListener('input', debounce(onInput, 500));
-
-//* Closes dropdown menu
-document.addEventListener('click', (event) => {
-  if (!root.contains(event.target)) {
-    dropdown.classList.remove('is-active');
-  }
+createAutoComplete({
+  root: document.querySelector('.autocomplete-three'),
 });
 
 //* Fetch from the api, more details about the movie
@@ -91,6 +42,7 @@ const onMovieSelect = async (movie) => {
 //* Generate HTML for a movie's title, genre, and plot
 const movieTemplate = (movieDetail) => {
   return `
+
     <article class="media">
       <figure class="media-left">
         <p class="image">
@@ -104,6 +56,31 @@ const movieTemplate = (movieDetail) => {
           <p>${movieDetail.Plot}</p>
         </div>
       </div>
+    </article>
+
+    <article class="notification is-primary">
+      <p class="title">${movieDetail.Awards}</p>
+      <p class="subtitle">Awards</p>
+    </article>
+
+    <article class="notification is-primary">
+      <p class="title">${movieDetail.BoxOffice}</p>
+      <p class="subtitle">Box Office</p>
+    </article>
+
+    <article class="notification is-primary">
+      <p class="title">${movieDetail.Metascore}</p>
+      <p class="subtitle">Metascore</p>
+    </article>
+
+    <article class="notification is-primary">
+      <p class="title">${movieDetail.imdbRating}</p>
+      <p class="subtitle">IMDB Rating</p>
+    </article>
+
+    <article class="notification is-primary">
+      <p class="title">${movieDetail.imdbVotes}</p>
+      <p class="subtitle">IMDB Votes</p>
     </article>
   `;
 };
