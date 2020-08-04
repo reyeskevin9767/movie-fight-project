@@ -14,7 +14,7 @@ const fetchData = async (searchTerm) => {
   return response.data.Search;
 };
 
-//* Generating HTML for dropdown menu
+//* Generate HTML for dropdown menu
 const root = document.querySelector('.autocomplete');
 root.innerHTML = `
 <label><b>Search For a Movie</b></label>
@@ -84,6 +84,26 @@ const onMovieSelect = async (movie) => {
       i: movie.imdbID,
     },
   });
-  
-  console.log(response.data);
+
+  document.querySelector('#summary').innerHTML = movieTemplate(response.data);
+};
+
+//* Generate HTML for a movie's title, genre, and plot
+const movieTemplate = (movieDetail) => {
+  return `
+    <article class="media">
+      <figure class="media-left">
+        <p class="image">
+          <img src="${movieDetail.Poster}" />
+        </p>
+      </figure>
+      <div class="media-content">
+        <div class="content">
+          <h1>${movieDetail.Title}</h1>
+          <h4>${movieDetail.Genre}</h4>
+          <p>${movieDetail.Plot}</p>
+        </div>
+      </div>
+    </article>
+  `;
 };
