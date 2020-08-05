@@ -80,6 +80,9 @@ const onMovieSelect = async (movie, summaryElement, side) => {
   }
 };
 
+let leftScore = 0;
+let rightScore = 0;
+
 //* Compare movies
 const runComparison = () => {
   const leftSideStats = document.querySelectorAll(
@@ -92,21 +95,65 @@ const runComparison = () => {
   leftSideStats.forEach((leftStat, index) => {
     const rightStat = rightSideStats[index];
 
-    const leftSideValue = parseInt(leftStat.dataset.value);
-    const rightSideValue = parseInt(rightStat.dataset.value);
+    let leftSideValue = parseFloat(leftStat.dataset.value);
+    let rightSideValue = parseFloat(rightStat.dataset.value);
+
+    if (isNaN(leftSideValue)) {
+      leftSideValue = 0;
+    }
+
+    if (isNaN(rightSideValue)) {
+      rightSideValue = 0;
+    }
+
+    console.log(leftSideValue);
+    console.log(rightSideValue);
 
     if (rightSideValue > leftSideValue) {
-      leftStat.classList.remove('is-primary');
-      leftStat.classList.add('is-warning');
+      leftStat.classList.remove('is-warning');
+      leftStat.classList.remove('is-success');
+      leftStat.classList.add('is-danger');
+      rightStat.classList.remove('is-warning');
+      rightStat.classList.remove('is-danger');
+      rightStat.classList.add('is-success');
+      rightScore += 1;
+    } else if (rightSideValue < leftSideValue) {
+      rightStat.classList.remove('is-warning');
+      rightStat.classList.remove('is-success');
+      rightStat.classList.add('is-danger');
+      leftStat.classList.remove('is-warning');
+      leftStat.classList.add('is-success');
+      leftStat.classList.remove('is-danger');
+      leftScore += 1;
     } else {
-      rightStat.classList.remove('is-primary');
+      leftStat.classList.add('is-warning');
+      leftStat.classList.remove('is-success');
+      leftStat.classList.remove('is-danger');
       rightStat.classList.add('is-warning');
+      rightStat.classList.remove('is-danger');
+      rightStat.classList.remove('is-success');
     }
   });
+
+  console.log(`${leftScore} - ${rightScore}`)
+  if (leftScore > rightScore) {
+    console.log(`Winner: ${leftMovie.Title}`);
+  } else if (leftScore < rightScore) {
+    console.log(`Winner: ${rightMovie.Title}`);
+  } else {
+    console.log(`This is a Draw`);
+  }
+
+  leftScore = 0
+  rightScore = 0
 };
 
 //* Generate HTML for movie's details
 const movieTemplate = (movieDetail) => {
+  if (!movieDetail.BoxOffice) {
+    movieDetail.BoxOffice = 'N/A';
+  }
+
   const dollars = parseInt(
     movieDetail.BoxOffice.replace(/\$/g, '').replace(/,/g, '')
   );
