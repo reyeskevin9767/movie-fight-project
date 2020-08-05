@@ -82,7 +82,6 @@ const onMovieSelect = async (movie, summaryElement, side) => {
 
 let leftScore = 0;
 let rightScore = 0;
-
 //* Compare movies
 const runComparison = () => {
   const leftSideStats = document.querySelectorAll(
@@ -133,18 +132,27 @@ const runComparison = () => {
     }
   });
 
-  console.log(`${leftScore} - ${rightScore}`);
-  if (leftScore > rightScore) {
-    console.log(`Winner: ${leftMovie.Title}`);
-  } else if (leftScore < rightScore) {
-    console.log(`Winner: ${rightMovie.Title}`);
-  } else {
-    console.log(`This is a Draw`);
-  }
-
+  winner();
   leftScore = 0;
   rightScore = 0;
 };
+
+//* Determine the Winner
+function winner() {
+  const scoreTable = document.querySelector('.scoretable');
+  const winner = document.querySelector('.winner');
+
+  scoreTable.innerHTML = `${leftScore} - ${rightScore}`;
+  if (leftScore > rightScore) {
+    winner.innerHTML = `Winner: ${leftMovie.Title}`;
+  }
+  else if (leftScore < rightScore) {
+    winner.innerHTML = `Winner: ${rightMovie.Title}`;
+  }
+  else {
+    winner.innerHTML = `This is a Draw`;
+  }
+}
 
 //* Generate HTML for movie's details
 const movieTemplate = (movieDetail) => {

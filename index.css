@@ -5,6 +5,12 @@
   margin: auto;
 }
 
+.winnerBox {
+  width: 600px;
+  text-align: center;
+  margin: auto;
+}
+
 /* Style for movie details */
 .notification {
   margin-top: 20px !important;
