@@ -109,33 +109,31 @@ const runComparison = () => {
     console.log(leftSideValue);
     console.log(rightSideValue);
 
+    const removeWarningSuccess = ['is-warning', 'is-success'];
+    const removeWarningDanger = ['is-warning', 'is-danger'];
+    const removeSuccessWarning = ['is-success', 'is-danger'];
+
     if (rightSideValue > leftSideValue) {
-      leftStat.classList.remove('is-warning');
-      leftStat.classList.remove('is-success');
+      leftStat.classList.remove(...removeWarningSuccess);
       leftStat.classList.add('is-danger');
-      rightStat.classList.remove('is-warning');
-      rightStat.classList.remove('is-danger');
+      rightStat.classList.remove(...removeWarningDanger);
       rightStat.classList.add('is-success');
       rightScore += 1;
     } else if (rightSideValue < leftSideValue) {
-      rightStat.classList.remove('is-warning');
-      rightStat.classList.remove('is-success');
+      rightStat.classList.remove(...removeWarningSuccess);
       rightStat.classList.add('is-danger');
-      leftStat.classList.remove('is-warning');
+      leftStat.classList.remove(...removeWarningDanger);
       leftStat.classList.add('is-success');
-      leftStat.classList.remove('is-danger');
       leftScore += 1;
     } else {
+      leftStat.classList.remove(...removeSuccessWarning);
       leftStat.classList.add('is-warning');
-      leftStat.classList.remove('is-success');
-      leftStat.classList.remove('is-danger');
+      rightStat.classList.remove(...removeSuccessWarning);
       rightStat.classList.add('is-warning');
-      rightStat.classList.remove('is-danger');
-      rightStat.classList.remove('is-success');
     }
   });
 
-  console.log(`${leftScore} - ${rightScore}`)
+  console.log(`${leftScore} - ${rightScore}`);
   if (leftScore > rightScore) {
     console.log(`Winner: ${leftMovie.Title}`);
   } else if (leftScore < rightScore) {
@@ -144,8 +142,8 @@ const runComparison = () => {
     console.log(`This is a Draw`);
   }
 
-  leftScore = 0
-  rightScore = 0
+  leftScore = 0;
+  rightScore = 0;
 };
 
 //* Generate HTML for movie's details
