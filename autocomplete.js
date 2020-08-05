@@ -6,7 +6,7 @@ const createAutoComplete = ({
   inputValue,
   fetchData
 }) => {
-  //* Generate HTML for dropdown menu
+  // Generate HTML for dropdown menu
   root.innerHTML = `
     <label><b>Search</b></label>
       <input class = "input" />
@@ -18,12 +18,12 @@ const createAutoComplete = ({
         </div>
 `;
 
-  //* Query Selectors
+  // Query Selectors
   const input = root.querySelector('input');
   const dropdown = root.querySelector('.dropdown');
   const resultsWrapper = root.querySelector('.results');
 
-  //* Use data from fetchData to create dropdown menu
+  // Use data from fetchData to create dropdown menu
   const onInput = async (event) => {
     const items = await fetchData(event.target.value);
 
@@ -52,10 +52,10 @@ const createAutoComplete = ({
     }
   };
 
-  //* Event Listeners
+  // Event Listeners
   input.addEventListener('input', debounce(onInput, 500));
 
-  //* Closes dropdown menu
+  // Closes dropdown menu
   document.addEventListener('click', (event) => {
     if (!root.contains(event.target)) {
       dropdown.classList.remove('is-active');
